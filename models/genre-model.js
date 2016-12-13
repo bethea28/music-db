@@ -6,4 +6,14 @@ const sequelizeConnection = require('../db');
 //////////
 
 
+var Genre = sequelizeConnection.define('genre',{
+	title:Sequelize.STRING
+			
+	
+})
+
+Genre.sync()
+
+
+
 module.exports = Genre;
