@@ -29,9 +29,11 @@ const getAllPlaylists = (req,res) =>{
 
 const createPlaylist = (req,res) =>{
 	console.log(req.body)
-	Playlist.create({
-		name: req.body.name
-	}).then(data=>{
+	Playlist.create(
+	
+		 req.body
+	
+	).then(data=>{
 
 	res.send(req.body.tempPlaylistName)
 	})

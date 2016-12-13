@@ -105,6 +105,14 @@
 	
 	var _songcontainer2 = _interopRequireDefault(_songcontainer);
 	
+	var _User = __webpack_require__(272);
+	
+	var _User2 = _interopRequireDefault(_User);
+	
+	var _usercontainer = __webpack_require__(273);
+	
+	var _usercontainer2 = _interopRequireDefault(_usercontainer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// <Display/>
@@ -120,7 +128,8 @@
 		_react2.default.createElement(_reactRouter.Route, { path: '/artist', component: _artistcontainer2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: '/songs', component: _songcontainer2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: '/playlist', component: _playlistcontainer2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: '/createplaylist', component: _createplaylistcontainer2.default })
+		_react2.default.createElement(_reactRouter.Route, { path: '/createplaylist', component: _createplaylistcontainer2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: '/user', component: _usercontainer2.default })
 	);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -16168,6 +16177,12 @@
 			type: "tempPlaylistName", data: text
 		};
 	};
+	
+	var tempPassword = exports.tempPassword = function tempPassword(text) {
+		return {
+			type: "tempPassword", data: text
+		};
+	};
 
 /***/ },
 /* 62 */
@@ -16215,7 +16230,9 @@
 		songs: [],
 		artist: [],
 		tempPlaylistName: '',
-		finalPlaylistName: ''
+		finalPlaylistName: '',
+		tempPassword: '',
+		finalPassword: ''
 	};
 	
 	var reducer = function reducer() {
@@ -16229,6 +16246,8 @@
 				return Object.assign({}, oldState, { artist: _store2.default.getState().artist.concat(action.data) });
 			case 'tempPlaylistName':
 				return Object.assign({}, oldState, { tempPlaylistName: action.data });
+			case 'tempPassword':
+				return Object.assign({}, oldState, { tempPassword: action.data });
 			default:
 				return oldState;
 		}
@@ -38633,14 +38652,14 @@
 	
 		makePlaylist: function makePlaylist(event) {
 			event.preventDefault();
-			var info = _store2.default.getState().tempPlaylistName;
+			var info = { name: _store2.default.getState().tempPlaylistName };
 			console.log(info);
 			_jquery2.default.ajax({
 				url: '/api/playlist',
 				type: "POST",
 				data: info,
-				success: function finish(data) {
-					JSON.stringify(data);
+				success: function (data) {
+					// JSON.stringify(data)
 					console.log(data);
 					// this.print(data)
 				}.bind(this)
@@ -38810,6 +38829,94 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(songContainer)(_song2.default);
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(20);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _actions = __webpack_require__(61);
+	
+	var _actions2 = _interopRequireDefault(_actions);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var User = _react2.default.createClass({
+		displayName: 'User',
+		makeUser: function makeUser(event) {
+			event.preventDefault();
+			var info = { username: store.getState().username, password: store.getState().password };
+			console.log(info);
+			$.ajax({
+				url: '/api/user',
+				type: "POST",
+				data: info,
+				success: function (data) {
+					console.log(data);
+				}.bind(this)
+			});
+		},
+		handleChange: function handleChange(event) {
+			var text = event.target.value;
+			store.dispatch((0, _actions2.default)(text));
+			console.log(store.getState().tempPassword);
+		},
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'form',
+					{ onSumbit: this.makeUser },
+					_react2.default.createElement('input', { onChange: this.handleChange, type: 'text' }),
+					_react2.default.createElement('input', { type: 'submit' })
+				)
+			);
+		}
+	});
+	
+	exports.default = User;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(20);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(18);
+	
+	var _User = __webpack_require__(272);
+	
+	var _User2 = _interopRequireDefault(_User);
+	
+	var _store = __webpack_require__(62);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var usercontainer = function usercontainer(store) {
+	  return {};
+	};
+	
+	exports.default = (0, _reactRedux.connect)(usercontainer)(_User2.default);
 
 /***/ }
 /******/ ]);

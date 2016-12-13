@@ -14,14 +14,14 @@ const Createplaylist = React.createClass({
 
 	makePlaylist(event){
 		event.preventDefault()
-		var info = store.getState().tempPlaylistName
+		var info = {name: store.getState().tempPlaylistName}
 		console.log(info)
 		$.ajax({
 			url:'/api/playlist',
 			type:"POST",
 			data:info,
-			success:function finish(data){
-			JSON.stringify(data)
+			success:function (data){
+			// JSON.stringify(data)
 			console.log(data)
 			// this.print(data)
 

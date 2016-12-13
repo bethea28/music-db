@@ -10,3 +10,7 @@ export const allArtist=(text)=>({
 export const tempPlaylistName=(text)=>({
 	type:"tempPlaylistName", data:text	
 })
+
+export const tempPassword=(text)=>({
+	type:"tempPassword", data:text	
+})

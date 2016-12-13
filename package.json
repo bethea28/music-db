@@ -17,6 +17,7 @@
     "babel-preset-react": "^6.16.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "fs": "0.0.1-security",
     "jquery": "^3.1.1",
     "nodemon": "^1.11.0",

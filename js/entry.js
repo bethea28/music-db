@@ -13,6 +13,8 @@ import playlistContainer from './playlistcontainer'
 import createplaylistContainer from './createplaylistcontainer'
 import navbarContainer from './navbarcontainer'
 import songContainer from './songcontainer'
+import User from './User'
+import userContainer from './usercontainer'
 
 
 
@@ -29,6 +31,7 @@ const routes = (
 		    <Route path="/songs" component={songContainer}/>
 		    <Route path="/playlist" component={playlistContainer}/>
 		    <Route path="/createplaylist" component={createplaylistContainer}/>
+		    <Route path="/user" component={userContainer}/>
 		</Route>
 )
 
