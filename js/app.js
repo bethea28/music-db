@@ -5,6 +5,22 @@ import Song from './song'
 
 const App = React.createClass({
 
+	componentDidMount() {
+    $.ajax({
+      method: 'GET',
+      url: '/auth'
+    })
+    .done((username) => {
+    	console.log(username	)
+      if(username) {
+        console.log(username + ' is logged in!');
+        this.setState({username: username});
+      } else {
+        console.log('No on is logged in');
+      }
+    })
+  },
+
 
 	render(){
 		return(

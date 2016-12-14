@@ -1,33 +1,60 @@
 import React from 'react'
 import tempPassword from './actions'
+import {handleUserName} from './actions'
+import {handleUserPass} from './actions'
+import store from './store'
+import $ from 'jquery'
 
 
 var User=React.createClass({
 	makeUser(event){
 		event.preventDefault()
-		let info = {username:store.getState().username,password:store.getState().password}
+		console.log(store.getState().username)
+		console.log(store.getState().password)
+
+		var info = {username:store.getState().username,password:store.getState().password}
 		console.log(info)
 		$.ajax({
-			url:'/api/user',
+			url:'/api/user/login',
 			type:"POST",
 			data:info,
-			success:function(data){
-				console.log(data)
-			}.bind(this)
+			
+		}).done(function(data){
+			console.log(data)
 		})
 	},
 	
-	handleChange(event){
+	handleUserName(event){
 		var text = event.target.value
-		store.dispatch(tempPassword(text))
-		console.log(store.getState().tempPassword)
+		console.log(text)
+		store.dispatch(handleUserName(text))
+		// console.log(store.getState().tempPassword)
+	},
+
+	handleUserPass(event){
+		var text = event.target.value
+		console.log(text)
+		store.dispatch(handleUserPass(text))
+		// console.log(store.getState().password)
 	},
 	
 	render(){
 		return (
+							// <input onChange={this.handleChangePass} type='text'/>
 			<div>
-				<form onSumbit={this.makeUser}>
-					<input onChange={this.handleChange} type='text'/>
+				{store.getState().username}
+				{store.getState().password}
+				<form onSubmit={this.makeUser}>
+						<div>
+							USER NAME
+							<input onChange={this.handleUserName} type='text'/>
+						</div>
+
+						<div>
+							PASSWORD
+							<input onChange={this.handleUserPass} type='text'/>
+
+						</div>
 					<input type='submit'/>
 				</form>
 			</div>

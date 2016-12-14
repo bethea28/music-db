@@ -10,7 +10,7 @@ const session = require('express-session')
 
 
 
-const authUser=(req,res)=>{
+const authUser	=(req,res)=>{
 		
 	  if(req.session.username) {
 	    res.send(req.session.username);
@@ -50,16 +50,22 @@ const makeUser= (req, res) => {
     })
   })
   .then((user) => {
+ //  	user.create(
+	// 	req.body
+	// ).then((data)=>{
+	// 	res.send(req.body.username)
+	// })
     //IF user exists, check if password is correct
     if(user && user.password === userInfo.password) {
+    	console.log(user)
       console.log('Password is correct!')
       return user;
     //ELSE IF user does not exist, create new user
     } else if(!user) {
       console.log('Creating new user!');
-      return user.create(userInfo);
+      return user.create({username:req.body.username,password:req.body.password});
     } else {
-      return null;
+      return 'bad';
     }
   })
   .then((user) => {

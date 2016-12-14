@@ -6,8 +6,10 @@ var defaultState={
 	artist:[],
 	tempPlaylistName:'',
 	finalPlaylistName:'',
-	tempPassword:'',
-	finalPassword:''
+	// tempPassword:'',
+	// finalPassword:'',
+	username:'',
+	password:''
 }
 
 var reducer=(oldState=defaultState,action)=>{
@@ -18,8 +20,10 @@ var reducer=(oldState=defaultState,action)=>{
 			return Object.assign({},oldState,{artist:store.getState().artist.concat(action.data)})
 		case 'tempPlaylistName':
 			return Object.assign({},oldState,{tempPlaylistName:action.data})
-		case 'tempPassword':
-			return Object.assign({},oldState,{tempPassword:action.data})
+		case 'handleUserName':
+			return Object.assign({},oldState,{username:action.data})
+		case 'handleUserPass':
+			return Object.assign({},oldState,{password:action.data})
 		default:
 			return oldState
 	}

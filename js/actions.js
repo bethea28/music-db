@@ -11,6 +11,10 @@ export const tempPlaylistName=(text)=>({
 	type:"tempPlaylistName", data:text	
 })
 
-export const tempPassword=(text)=>({
-	type:"tempPassword", data:text	
+export const handleUserName=(text)=>({
+	type:"handleUserName", data:text	
+})
+
+export const handleUserPass=(text)=>({
+	type:"handleUserPass", data:text	
 })

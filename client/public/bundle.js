@@ -5836,7 +5836,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	
 	var _react = __webpack_require__(20);
@@ -5856,19 +5856,35 @@
 	// import test from './actions'
 	
 	var App = _react2.default.createClass({
-		displayName: 'App',
-		render: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'button',
-					null,
-					'App'
-				),
-				this.props.children
-			);
-		}
+	  displayName: 'App',
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    _jquery2.default.ajax({
+	      method: 'GET',
+	      url: '/auth'
+	    }).done(function (username) {
+	      console.log(username);
+	      if (username) {
+	        console.log(username + ' is logged in!');
+	        _this.setState({ username: username });
+	      } else {
+	        console.log('No on is logged in');
+	      }
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'button',
+	        null,
+	        'App'
+	      ),
+	      this.props.children
+	    );
+	  }
 	});
 	
 	exports.default = App;
@@ -16178,9 +16194,15 @@
 		};
 	};
 	
-	var tempPassword = exports.tempPassword = function tempPassword(text) {
+	var handleUserName = exports.handleUserName = function handleUserName(text) {
 		return {
-			type: "tempPassword", data: text
+			type: "handleUserName", data: text
+		};
+	};
+	
+	var handleUserPass = exports.handleUserPass = function handleUserPass(text) {
+		return {
+			type: "handleUserPass", data: text
 		};
 	};
 
@@ -16231,8 +16253,10 @@
 		artist: [],
 		tempPlaylistName: '',
 		finalPlaylistName: '',
-		tempPassword: '',
-		finalPassword: ''
+		// tempPassword:'',
+		// finalPassword:'',
+		username: '',
+		password: ''
 	};
 	
 	var reducer = function reducer() {
@@ -16246,8 +16270,10 @@
 				return Object.assign({}, oldState, { artist: _store2.default.getState().artist.concat(action.data) });
 			case 'tempPlaylistName':
 				return Object.assign({}, oldState, { tempPlaylistName: action.data });
-			case 'tempPassword':
-				return Object.assign({}, oldState, { tempPassword: action.data });
+			case 'handleUserName':
+				return Object.assign({}, oldState, { username: action.data });
+			case 'handleUserPass':
+				return Object.assign({}, oldState, { password: action.data });
 			default:
 				return oldState;
 		}
@@ -38848,37 +38874,71 @@
 	
 	var _actions2 = _interopRequireDefault(_actions);
 	
+	var _store = __webpack_require__(62);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _jquery = __webpack_require__(59);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var User = _react2.default.createClass({
 		displayName: 'User',
 		makeUser: function makeUser(event) {
 			event.preventDefault();
-			var info = { username: store.getState().username, password: store.getState().password };
+			console.log(_store2.default.getState().username);
+			console.log(_store2.default.getState().password);
+	
+			var info = { username: _store2.default.getState().username, password: _store2.default.getState().password };
 			console.log(info);
-			$.ajax({
-				url: '/api/user',
+			_jquery2.default.ajax({
+				url: '/api/user/login',
 				type: "POST",
-				data: info,
-				success: function (data) {
-					console.log(data);
-				}.bind(this)
+				data: info
+	
+			}).done(function (data) {
+				console.log(data);
 			});
 		},
-		handleChange: function handleChange(event) {
+		handleUserName: function handleUserName(event) {
 			var text = event.target.value;
-			store.dispatch((0, _actions2.default)(text));
-			console.log(store.getState().tempPassword);
+			console.log(text);
+			_store2.default.dispatch((0, _actions.handleUserName)(text));
+			// console.log(store.getState().tempPassword)
+		},
+		handleUserPass: function handleUserPass(event) {
+			var text = event.target.value;
+			console.log(text);
+			_store2.default.dispatch((0, _actions.handleUserPass)(text));
+			// console.log(store.getState().password)
 		},
 		render: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
+			return (
+				// <input onChange={this.handleChangePass} type='text'/>
 				_react2.default.createElement(
-					'form',
-					{ onSumbit: this.makeUser },
-					_react2.default.createElement('input', { onChange: this.handleChange, type: 'text' }),
-					_react2.default.createElement('input', { type: 'submit' })
+					'div',
+					null,
+					_store2.default.getState().username,
+					_store2.default.getState().password,
+					_react2.default.createElement(
+						'form',
+						{ onSubmit: this.makeUser },
+						_react2.default.createElement(
+							'div',
+							null,
+							'USER NAME',
+							_react2.default.createElement('input', { onChange: this.handleUserName, type: 'text' })
+						),
+						_react2.default.createElement(
+							'div',
+							null,
+							'PASSWORD',
+							_react2.default.createElement('input', { onChange: this.handleUserPass, type: 'text' })
+						),
+						_react2.default.createElement('input', { type: 'submit' })
+					)
 				)
 			);
 		}
@@ -38893,7 +38953,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
 	var _react = __webpack_require__(20);
@@ -38913,7 +38973,11 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var usercontainer = function usercontainer(store) {
-	  return {};
+		return {
+			username: store.username,
+			password: store.password
+	
+		};
 	};
 	
 	exports.default = (0, _reactRedux.connect)(usercontainer)(_User2.default);
